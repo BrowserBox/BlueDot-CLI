@@ -1,7 +1,7 @@
-# Helmsman
+# BlueDot
 
 <p align="center">
-  <img src="logo.png" alt="Helmsman Logo" width="220">
+  <img src="logo.png" alt="BlueDot Logo" width="220">
   <br>
   <b>Universal Cloud Console</b>
   <br>
@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/BrowserBox/Helmsman-TUI/releases/latest">
-    <img src="https://img.shields.io/github/v/release/BrowserBox/Helmsman-TUI?style=for-the-badge&color=blue" alt="Latest Release">
+  <a href="https://github.com/BrowserBox/BlueDot-CLI/releases/latest">
+    <img src="https://img.shields.io/github/v/release/BrowserBox/BlueDot-CLI?style=for-the-badge&color=blue" alt="Latest Release">
   </a>
   <a href="#download"><img src="https://img.shields.io/badge/macOS-PKG_Installer-white?logo=apple&style=for-the-badge" alt="macOS"></a>
   <a href="#download"><img src="https://img.shields.io/badge/Linux-Binary-white?logo=linux&style=for-the-badge" alt="Linux"></a>
@@ -21,9 +21,9 @@
 
 ## 🚀 What is this?
 
-**Helmsman** is the ultimate Terminal User Interface (TUI) for developers who are tired of juggling 5 different browser tabs just to find a server.
+**BlueDot** is the ultimate Terminal User Interface (TUI) for developers who are tired of juggling 5 different browser tabs just to find a server.
 
-**We unify the cloud market.** Instead of navigating complex, slow web portals, Helmsman lets you **search 58,000+ offers** globally, find the cheapest compute (like a $0.001/hr instance in Mumbai), and provision it instantly—all from your keyboard.
+**We unify the cloud market.** Instead of navigating complex, slow web portals, BlueDot lets you **search 58,000+ offers** globally, find the cheapest compute (like a $0.001/hr instance in Mumbai), and provision it instantly—all from your keyboard.
 
 **Supported Providers:** AWS, Azure, GCP, Hetzner, and Vultr.
 
@@ -32,7 +32,7 @@
 ## 📸 The Tour
 
 ### 1. The Market: Find the Best Deal
-Stop guessing if Hetzner is cheaper than AWS for your specific RAM/CPU needs. Helmsman indexes offers from all provider APIs and caches them locally (SQLite) for instant searching.
+Stop guessing if Hetzner is cheaper than AWS for your specific RAM/CPU needs. BlueDot indexes offers from all provider APIs and caches them locally (SQLite) for instant searching.
 
 ![The Market View](market-offers.png)
 
@@ -52,13 +52,13 @@ Your active servers appear here, normalized across all providers. A Hetzner box 
 ![Dashboard View](main-dash.png)
 
 *   **Unified Actions:** `(s)` SSH, `(p)` Power/Reboot, `(d)` Delete/Nuke.
-*   **Audit Trail:** See that green text at the bottom? That is your **activity log**. Every command Helmsman runs on your behalf is logged to a daily gzipped file locally. You always know exactly what happened.
+*   **Audit Trail:** See that green text at the bottom? That is your **activity log**. Every command BlueDot runs on your behalf is logged to a daily gzipped file locally. You always know exactly what happened.
 
 ---
 
 ## 🛠 Under the Hood (The Wrapper Architecture)
 
-Helmsman is a **native Go binary** that acts as a secure, unified wrapper around your existing vendor CLIs.
+BlueDot is a **native Go binary** that acts as a secure, unified wrapper around your existing vendor CLIs.
 
 1.  **Intent Translation:** You press `Enter` to rent a box.
 2.  **Command Construction:** We build the specific `aws ec2...` or `az vm create...` command.
@@ -68,7 +68,7 @@ Helmsman is a **native Go binary** that acts as a secure, unified wrapper around
 We are a "Shopping" tool, not a full "Infrastructure-as-Code" replacement. We are optimized for spinning up resources safely and quickly. Our delete commands are deliberate and focused only on the boxes you select in the UI.
 
 ### Prerequisites
-You must have the respective provider CLIs installed and authenticated on your machine to use them with Helmsman:
+You must have the respective provider CLIs installed and authenticated on your machine to use them with BlueDot:
 *   `aws` (AWS CLI)
 *   `az` (Azure CLI)
 *   `gcloud` (Google Cloud SDK)
@@ -85,43 +85,43 @@ You must have the respective provider CLIs installed and authenticated on your m
 
 ### macOS (Recommended)
 
-Download the `.pkg` installer for your architecture. This installs the binary to `/usr/local/bin/helmsman`.
+Download the `.pkg` installer for your architecture. This installs the binary to `/usr/local/bin/bluedot`.
 
-*   [**Download for Apple Silicon (M1/M2/M3)**](https://github.com/BrowserBox/Helmsman-TUI/releases/download/v2.1.2/helmsman_darwin_arm64.pkg)
-*   [**Download for Intel Macs**](https://github.com/BrowserBox/Helmsman-TUI/releases/download/v2.1.2/helmsman_darwin_amd64.pkg)
+*   [**Download for Apple Silicon (M1/M2/M3)**](https://github.com/BrowserBox/BlueDot-CLI/releases/download/v2.1.2/bluedot_darwin_arm64.pkg)
+*   [**Download for Intel Macs**](https://github.com/BrowserBox/BlueDot-CLI/releases/download/v2.1.2/bluedot_darwin_amd64.pkg)
 
 **Pro Tip:** Add an alias to your `.zshrc` or `.bashrc`:
 ```bash
-alias hm="helmsman"
+alias hm="bluedot"
 ```
 
 ### Linux & Windows
 
 Download the standalone binary for your architecture.
 
-*   [**Download for Linux (amd64)**](https://github.com/BrowserBox/Helmsman-TUI/releases/download/v2.1.2/helmsman_linux_amd64)
-*   [**Download for Windows (amd64 .exe)**](https://github.com/BrowserBox/Helmsman-TUI/releases/download/v2.1.2/helmsman_windows_amd64.exe)
+*   [**Download for Linux (amd64)**](https://github.com/BrowserBox/BlueDot-CLI/releases/download/v2.1.2/bluedot_linux_amd64)
+*   [**Download for Windows (amd64 .exe)**](https://github.com/BrowserBox/BlueDot-CLI/releases/download/v2.1.2/bluedot_windows_amd64.exe)
 
 **Linux Installation Example:**
 ```bash
 # Download
-wget https://github.com/BrowserBox/Helmsman-TUI/releases/download/v2.1.2/helmsman_linux_amd64
+wget https://github.com/BrowserBox/BlueDot-CLI/releases/download/v2.1.2/bluedot_linux_amd64
 
 # Move to path
-chmod +x helmsman_linux_amd64
-sudo mv helmsman_linux_amd64 /usr/local/bin/helmsman
+chmod +x bluedot_linux_amd64
+sudo mv bluedot_linux_amd64 /usr/local/bin/bluedot
 ```
 
 ---
 
 ## 💎 Pricing & Model
 
-**Helmsman is paid software with a Free Trial.**
+**BlueDot is paid software with a Free Trial.**
 
 We are building a sustainable tool where **you are the customer, not the product.**
 
 *   **The Trial:** Full access to shop and manage boxes.
-*   **The License:** [Purchase a License](https://license.dosaygo.com/helmsman-buy)
+*   **The License:** [Purchase a License](https://license.dosaygo.com/bluedot-buy)
 
 ---
 
@@ -135,7 +135,7 @@ We are building a sustainable tool where **you are the customer, not the product
 
 Found a bug? Have a feature request?
 
-*   **Email:** `helmsman@browserbox.io`
-*   **Issue:** [Open a ticket in this repo](https://github.com/BrowserBox/Helmsman-TUI/issues)
+*   **Email:** `bluedot@browserbox.io`
+*   **Issue:** [Open a ticket in this repo](https://github.com/BrowserBox/BlueDot-CLI/issues)
 
 *Happy Shopping.*

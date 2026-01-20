@@ -1,11 +1,11 @@
-# Helmsman Installer (Windows)
-# Downloads the binary to ~/.helmsman/bin and adds to PATH
+# BlueDot Installer (Windows)
+# Downloads the binary to ~/.bluedot/bin and adds to PATH
 
 $ErrorActionPreference = "Stop"
 
-$Repo = "BrowserBox/Helmsman-TUI"
-$InstallDir = "$env:USERPROFILE\.helmsman\bin"
-$Asset = "helmsman_windows_amd64.exe"
+$Repo = "BrowserBox/BlueDot-CLI"
+$InstallDir = "$env:USERPROFILE\.bluedot\bin"
+$Asset = "bluedot_windows_amd64.exe"
 
 # Create install directory
 if (-not (Test-Path $InstallDir)) {
@@ -23,9 +23,9 @@ try {
 
 $Tag = $Release.tag_name
 $DownloadUrl = "https://github.com/$Repo/releases/download/$Tag/$Asset"
-$OutputPath = "$InstallDir\helmsman.exe"
+$OutputPath = "$InstallDir\bluedot.exe"
 
-Write-Host "Downloading Helmsman $Tag..."
+Write-Host "Downloading BlueDot $Tag..."
 try {
     Invoke-WebRequest -Uri $DownloadUrl -OutFile $OutputPath
 } catch {
@@ -42,5 +42,5 @@ if ($UserPath -notlike "*$InstallDir*") {
 }
 
 Write-Host ""
-Write-Host "Helmsman installed successfully!"
-Write-Host "Run 'helmsman' to start."
+Write-Host "BlueDot installed successfully!"
+Write-Host "Run 'bluedot' to start."

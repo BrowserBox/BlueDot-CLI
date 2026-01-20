@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Helmsman Installer
-# Installs helmsman-cli binary and helmsman wrapper that handles auto-updates
-# Pattern: helmsman (wrapper) -> helmsman-cli (binary)
+# BlueDot Installer
+# Installs bluedot-cli binary and bluedot wrapper that handles auto-updates
+# Pattern: bluedot (wrapper) -> bluedot-cli (binary)
 
-GITHUB_REPO="${HELMSMAN_REPO:-BrowserBox/Helmsman-TUI}"
-GITHUB_TOKEN="${HELMSMAN_GITHUB_TOKEN:-}"
-RELEASE_TAG="${HELMSMAN_RELEASE_TAG:-latest}"
-INSTALL_DIR="${HELMSMAN_INSTALL_DIR:-/usr/local/bin}"
+GITHUB_REPO="${BLUEDOT_REPO:-BrowserBox/BlueDot-CLI}"
+GITHUB_TOKEN="${BLUEDOT_GITHUB_TOKEN:-}"
+RELEASE_TAG="${BLUEDOT_RELEASE_TAG:-latest}"
+INSTALL_DIR="${BLUEDOT_INSTALL_DIR:-/usr/local/bin}"
 
 os_name="$(uname -s | tr '[:upper:]' '[:lower:]')"
 arch_name="$(uname -m | tr '[:upper:]' '[:lower:]')"
@@ -17,7 +17,7 @@ case "$os_name" in
   darwin) os="macos" ;;
   linux) os="linux" ;;
   msys*|mingw*|cygwin*|windows_nt)
-    echo "Windows detected. Use: irm helmsman.browserbox.io/install.ps1 | iex" >&2
+    echo "Windows detected. Use: irm bluedot.browserbox.io/install.ps1 | iex" >&2
     exit 1
     ;;
   *) echo "Unsupported OS: $os_name" >&2; exit 1 ;;
@@ -31,13 +31,13 @@ esac
 
 # Build asset name
 if [[ "$os" == "macos" ]]; then
-  asset="helmsman_darwin_${arch}.pkg"
+  asset="bluedot_darwin_${arch}.pkg"
 elif [[ "$os" == "linux" ]]; then
   if [[ "$arch" != "amd64" ]]; then
     echo "Linux build is currently only available for amd64/x86_64 (got: $arch)." >&2
     exit 1
   fi
-  asset="helmsman_linux_amd64"
+  asset="bluedot_linux_amd64"
 else
   echo "Unsupported platform: $os $arch" >&2
   exit 1
@@ -55,9 +55,9 @@ safe_rm() {
 }
 
 # Clean old installs
-safe_rm "$INSTALL_DIR/helmsman"
-safe_rm "$INSTALL_DIR/helmsman-cli"
-safe_rm "/usr/local/bin/helmsman"
+safe_rm "$INSTALL_DIR/bluedot"
+safe_rm "$INSTALL_DIR/bluedot-cli"
+safe_rm "/usr/local/bin/bluedot"
 
 # Build download URL
 if [[ "$RELEASE_TAG" == "latest" ]]; then
@@ -133,7 +133,7 @@ if [[ ! -w "$INSTALL_DIR" ]]; then
   fi
 fi
 
-# Install binary as helmsman-cli
+# Install binary as bluedot-cli
 if [[ "$os" == "macos" ]]; then
   echo "Running installer (requires admin)..."
   
@@ -144,58 +144,58 @@ if [[ "$os" == "macos" ]]; then
   else
     echo "Can't run sudo installer non-interactively; opening the pkg installer UI..." >&2
     open "$TMP_FILE"
-    echo "After install completes, run: helmsman" >&2
+    echo "After install completes, run: bluedot" >&2
     exit 0
   fi
   
-  if [[ ! -x "/usr/local/bin/helmsman-cli" ]]; then
-    # Older pkgs shipped the binary as helmsman; rename to helmsman-cli to match the wrapper.
-    if [[ -x "/usr/local/bin/helmsman" ]]; then
+  if [[ ! -x "/usr/local/bin/bluedot-cli" ]]; then
+    # Older pkgs shipped the binary as bluedot; rename to bluedot-cli to match the wrapper.
+    if [[ -x "/usr/local/bin/bluedot" ]]; then
       if can_sudo; then
-        sudo mv /usr/local/bin/helmsman /usr/local/bin/helmsman-cli
+        sudo mv /usr/local/bin/bluedot /usr/local/bin/bluedot-cli
       else
-        mv /usr/local/bin/helmsman /usr/local/bin/helmsman-cli
+        mv /usr/local/bin/bluedot /usr/local/bin/bluedot-cli
       fi
     fi
   fi
 
   # Remove aliases created by pkg scripts; the wrapper we install below owns these names.
-  for alias in helmsman helm hm; do
+  for alias in bluedot helm hm; do
     safe_rm "/usr/local/bin/$alias"
   done
 
-  if [[ ! -x "/usr/local/bin/helmsman-cli" ]]; then
-    echo "Install failed: /usr/local/bin/helmsman-cli not found." >&2
+  if [[ ! -x "/usr/local/bin/bluedot-cli" ]]; then
+    echo "Install failed: /usr/local/bin/bluedot-cli not found." >&2
     exit 1
   fi
   INSTALL_DIR="/usr/local/bin"
 else
-  # Linux: install binary directly as helmsman-cli
+  # Linux: install binary directly as bluedot-cli
   chmod +x "$TMP_FILE"
   if [[ -n "$use_sudo" ]]; then
-    $use_sudo mv "$TMP_FILE" "$INSTALL_DIR/helmsman-cli"
+    $use_sudo mv "$TMP_FILE" "$INSTALL_DIR/bluedot-cli"
   else
-    mv "$TMP_FILE" "$INSTALL_DIR/helmsman-cli"
+    mv "$TMP_FILE" "$INSTALL_DIR/bluedot-cli"
   fi
 fi
 
 # Create launcher wrapper script
 launcher_script='#!/usr/bin/env bash
-# Helmsman Launcher - checks for updates and runs helmsman-cli
+# BlueDot Launcher - checks for updates and runs bluedot-cli
 
-GITHUB_REPO="BrowserBox/Helmsman-TUI"
-CACHE_FILE="$HOME/.helmsman/.version-cache"
+GITHUB_REPO="BrowserBox/BlueDot-CLI"
+CACHE_FILE="$HOME/.bluedot/.version-cache"
 CACHE_TTL=10800  # 3 hours
 
 # Find the binary
-if [[ -x "/usr/local/bin/helmsman-cli" ]]; then
-  binary="/usr/local/bin/helmsman-cli"
-elif [[ -x "/usr/local/bin/helmsman" ]]; then
-  binary="/usr/local/bin/helmsman"
-elif [[ -x "$HOME/.local/bin/helmsman-cli" ]]; then
-  binary="$HOME/.local/bin/helmsman-cli"
+if [[ -x "/usr/local/bin/bluedot-cli" ]]; then
+  binary="/usr/local/bin/bluedot-cli"
+elif [[ -x "/usr/local/bin/bluedot" ]]; then
+  binary="/usr/local/bin/bluedot"
+elif [[ -x "$HOME/.local/bin/bluedot-cli" ]]; then
+  binary="$HOME/.local/bin/bluedot-cli"
 else
-  echo "Error: helmsman-cli not found. Please reinstall." >&2
+  echo "Error: bluedot-cli not found. Please reinstall." >&2
   exit 1
 fi
 
@@ -215,9 +215,9 @@ case "$arch_name" in
 esac
 
 if [[ "$os" == "macos" ]]; then
-  asset="helmsman_darwin_${arch}.pkg"
+  asset="bluedot_darwin_${arch}.pkg"
 else
-  asset="helmsman_linux_amd64"
+  asset="bluedot_linux_amd64"
 fi
 
 get_current_version() {
@@ -249,7 +249,7 @@ do_update() {
   tmp_dir="$(mktemp -d)"
   local tmp_file="$tmp_dir/$asset"
   
-  echo "Updating Helmsman to $version..." >&2
+  echo "Updating BlueDot to $version..." >&2
   if ! curl -fsSL "$url" -o "$tmp_file" 2>/dev/null; then
     rm -rf "$tmp_dir"
     echo "Update failed, using existing version." >&2
@@ -258,10 +258,10 @@ do_update() {
   
   if [[ "$os" == "macos" ]]; then
     if [[ "$(id -u)" -eq 0 ]]; then
-      rm -f /usr/local/bin/helmsman-cli
+      rm -f /usr/local/bin/bluedot-cli
       installer -pkg "$tmp_file" -target /
     elif command -v sudo >/dev/null 2>&1 && [[ -t 0 ]]; then
-      sudo rm -f /usr/local/bin/helmsman-cli
+      sudo rm -f /usr/local/bin/bluedot-cli
       sudo installer -pkg "$tmp_file" -target /
     else
       echo "Cannot update non-interactively (no sudo). Run manually to update." >&2
@@ -300,8 +300,8 @@ fi
 exec "$binary" "$@"
 '
 
-# Install wrapper as helmsman
-wrapper_target="$INSTALL_DIR/helmsman"
+# Install wrapper as bluedot
+wrapper_target="$INSTALL_DIR/bluedot"
 if [[ -n "$use_sudo" ]]; then
   echo "$launcher_script" | $use_sudo tee "$wrapper_target" > /dev/null
   $use_sudo chmod +x "$wrapper_target"
@@ -318,8 +318,8 @@ esac
 
 echo ""
 echo "Installed:"
-echo "  Binary:  $INSTALL_DIR/helmsman-cli"
-echo "  Wrapper: $INSTALL_DIR/helmsman (auto-updates)"
+echo "  Binary:  $INSTALL_DIR/bluedot-cli"
+echo "  Wrapper: $INSTALL_DIR/bluedot (auto-updates)"
 echo ""
 
 if [[ "$path_ok" != "true" ]]; then
@@ -342,4 +342,4 @@ if [[ "$path_ok" != "true" ]]; then
   echo ""
 fi
 
-echo "Run: helmsman"
+echo "Run: bluedot"
