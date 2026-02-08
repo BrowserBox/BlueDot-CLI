@@ -102,7 +102,7 @@ See [releases](https://github.com/BrowserBox/BlueDot-CLI/releases/latest)
 We are building a sustainable tool where **you are the customer, not the product.**
 
 *   **The Trial:** Full access to shop and manage boxes.
-*   **The License:** [Purchase a License](https://license.dosaygo.com/bluedot-buy)
+*   **The License:** [Purchase a License](https://license.dosaygo.com/helmsman-buy)
 
 ---
 
